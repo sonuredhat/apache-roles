@@ -1,0 +1,17 @@
+---
+- name: setting up html file
+  template:
+    src: templates/index.j2
+    dest: /var/www/html/index.html
+
+- name: firewall
+  firewalld:
+    service: http
+    permanent: yes
+    state: enabled
+
+- name: reload firewall
+  service:
+    name: firewalld
+    state: reloaded
+...

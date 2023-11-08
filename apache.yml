@@ -1,0 +1,32 @@
+---
+- name: apache
+  hosts: rhel 
+  become: true
+  tasks: 
+- name: Installing apache 
+  package:
+    name: httpd
+    state: latest
+- name: starting service 
+  service:
+    name: httpd
+    state: started
+        enabled: true
+    - name: setting up html file
+      template:
+        src: /home/sonu/yml_dir/rolls/html.j2
+        dest: /var/www/html/index.html
+    - name: restarting apache
+      service: 
+        name: httpd
+        state: restarted
+    - name: firewall
+      firewalld:
+        service: http
+        permanent: yes
+        state: enabled
+    - name: reload firewall
+      service:
+        name: firewalld
+        state: reloaded
+...
